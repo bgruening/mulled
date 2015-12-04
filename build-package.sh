@@ -2,9 +2,9 @@
 
 PKG=$1
 VERS=$2
-EXEC=$3
-if [ "x$EXEC" = "x" ]; then
-  EXEC=$1
+BIN=$3
+if [ "x$BIN" = "x" ]; then
+  BIN=$1
 fi
 
 if [ ! -f involucro ]; then
@@ -23,7 +23,7 @@ inv.task('build')
     .run('/root/brew/bin/brew install $PKG && /root/brew/bin/brew test $PKG')
   .wrap('dist').inImage('mwcampbell/muslbase-runtime')
     .at("/cellar")
-    .withConfig({entrypoint = {"/cellar/$PKG/$VERS/bin/$EXEC"}})
+    .withConfig({entrypoint = {"/cellar/$PKG/$VERS/bin/$BIN"}})
     .as('thriqon/mulled:$PKG')
   .using('busybox)
     .run('rm', '-rf', 'dist')
