@@ -10,13 +10,12 @@ install:
 
 script:
   - ./build-package.sh hello 2.10
+  - ./build-package.sh base64 1.5
+  - ./build-package.sh etcd 2.2.1
 
-before_deploy:
+after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push thriqon/mulled:hello
+  - docker push thriqon/mulled:base64
+  - docker push thriqon/mulled:etcd
 
-deploy:
-  provider: script
-  script: docker push thriqon/mulled:hello
-  skip_cleanup: true
-  on:
-    all_branches: true
