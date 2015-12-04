@@ -25,7 +25,7 @@ inv.task('build')
     .at("/cellar")
     .withConfig({entrypoint = {"/cellar/$PKG/$VERS/bin/$BIN"}})
     .as('thriqon/mulled:$PKG')
-  .using('busybox)
+  .using('busybox')
     .run('rm', '-rf', 'dist')
 EOF
 
