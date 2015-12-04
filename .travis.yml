@@ -11,11 +11,11 @@ install:
 script:
   - ./build-package.sh hello 2.10
   - ./build-package.sh base64 1.5
-  - ./build-package.sh mtr 0.86
+  - ./build-package.sh gnu-units 2.02
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push thriqon/mulled:hello
   - docker push thriqon/mulled:base64
-  - docker push thriqon/mulled:mtr
+  - docker push thriqon/mulled:gnu-units
 
