@@ -11,11 +11,11 @@ install:
 script:
   - PKG=hello VERS=2.10 BIN=hello ./involucro build
   - PKG=base64 VERS=1.5 BIN=base64 ./involucro build
-  - PKG=gnu-units VERS=2.02 BIN=units ./involucro build
+  - PKG=sha2 VERS=1.0.1 BIN=sha2 ./involucro build
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push thriqon/mulled:hello
   - docker push thriqon/mulled:base64
-  - docker push thriqon/mulled:gnu-units
+  - docker push thriqon/mulled:sha2
 
