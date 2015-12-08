@@ -12,10 +12,12 @@ script:
   - PKG=hello VERS=2.10 BIN=hello ./involucro build
   - PKG=base64 VERS=1.5 BIN=base64 ./involucro build
   - PKG=sha2 VERS=1.0.1 BIN=sha2 ./involucro build
+  - PKG=irssi VERS=0.8.17 BIN=irssi ./involucro build
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push thriqon/mulled:hello
   - docker push thriqon/mulled:base64
   - docker push thriqon/mulled:sha2
+  - docker push thriqon/mulled:irssi
 
