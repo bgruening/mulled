@@ -9,9 +9,9 @@ install:
   - chmod u+x involucro
 
 script:
-  - ./build-package.sh hello 2.10
-  - ./build-package.sh base64 1.5
-  - ./build-package.sh gnu-units 2.02 units
+  - PKG=hello VERS=2.10 BIN=hello ./involucro build
+  - PKG=base64 VERS=1.5 BIN=base64 ./involucro build
+  - PKG=gnu-units VERS=2.02 BIN=units ./involucro build
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
