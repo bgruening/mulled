@@ -4,6 +4,10 @@ sudo: required
 services:
   - docker
 
+branches:
+  only:
+    - master
+
 install:
   - wget https://storage.googleapis.com/involucro-1149.appspot.com/involucro
   - chmod u+x involucro
