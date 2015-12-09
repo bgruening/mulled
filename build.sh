@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 (while read line; do
   if [[ $line == \#* ]]; then continue; fi
 
