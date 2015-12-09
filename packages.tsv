@@ -1,5 +1,5 @@
 # Packager	Package	Executable	Revision
 linuxbrew	hello	hello	1
-linuxbrew	bwa	bwa	1
+linuxbrew	coreutils	coreutils	1
 linuxbrew	base64	base64	1
 linuxbrew	sha2	sha2	1
