@@ -2,6 +2,8 @@
 inv.task('build')
   .using('busybox')
     .run('mkdir', '-p', 'dist/bin')
+    .run('mkdir', '-p', 'info')
+
   .using('thriqon/linuxbrew-alpine')
     .withConfig({
       entrypoint = {"/bin/sh", "-c"},
@@ -11,9 +13,12 @@ inv.task('build')
     })
     .withHostConfig({binds = {
       "./dist/bin:/root/brew/bin",
-      "./dist/Cellar:/root/brew/Cellar"
+      "./dist/Cellar:/root/brew/Cellar",
+      "./info:/info"
     }})
-    .run('$BREW install ' .. ENV.PACKAGE .. ' && $BREW test ' .. ENV.PACKAGE)
+    .run('$BREW install ' .. ENV.PACKAGE)
+    .run('$BREW test ' .. ENV.PACKAGE)
+    .run('$BREW info --json=v1 ' .. ENV.PACKAGE .. ' > /info/info.json')
 
 inv.task('package')
   .wrap('dist').inImage('mwcampbell/muslbase-runtime')
@@ -24,3 +29,4 @@ inv.task('package')
 inv.task('clean')
   .using('busybox')
     .run('rm', '-rf', 'dist')
+    .run('rm', '-rf', 'info')
