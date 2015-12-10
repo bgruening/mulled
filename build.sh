@@ -29,8 +29,9 @@ function buildPackage {
   PACKAGER=$1
   PACKAGE=$2
   BINARY=$2
+  ADDITIONAL_PACKAGES=$3
 
-  PACKAGE=$PACKAGE BINARY=$BINARY ./involucro -f ${PACKAGER}.lua build package
+  PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua build package
 
   POST_FILENAME=page/_posts/$(date +%F)-$PACKAGE.html
   yamlForImage $PACKAGE $PACKAGER > $POST_FILENAME
@@ -44,7 +45,7 @@ function buildPackage {
   if [[ $line == \#* ]]; then continue; fi
   IFS=$'\t' read -ra FIELDS <<< "$line"
 
-  buildPackage ${FIELDS[0]} ${FIELDS[1]} ${FIELDS[2]}
+  buildPackage ${FIELDS[0]} ${FIELDS[1]} ${FIELDS[2]} ${FIELDS[3]}
 done) < packages.tsv
 
 git config --global user.name "Travis BuildBot"
