@@ -21,6 +21,7 @@ function yamlForImage {
   echo "checksum: $(docker save $REPO | sha256sum - | cut -d' ' -f 1)"
   echo "buildurl: \"https://travis-ci.org/thriqon/mulled/builds/$TRAVIS_BUILD_ID\""
   echo "packager: $PACKAGER"
+  echo "layout: post"
   echo "---"
 }
 
