@@ -17,7 +17,7 @@ function yamlForImage {
   if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
     echo "published: true"
   fi
-  echo "size: $(numfmt --to=iec-i --suffix=B --format="%.3f" $(docker inspect -f "{{.VirtualSize}}" $REPO))"
+  echo "size: $(docker inspect -f "{{.VirtualSize}}" $REPO | numfmt --to=iec-i --suffix=B)"
   echo "checksum: $(docker save $REPO | sha256sum - | cut -d' ' -f 1)"
   echo "buildurl: \"https://travis-ci.org/thriqon/mulled/builds/$TRAVIS_BUILD_ID\""
   echo "packager: $PACKAGER"
