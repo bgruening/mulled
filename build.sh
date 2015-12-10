@@ -46,5 +46,8 @@ function buildPackage {
   buildPackage ${FIELDS[0]} ${FIELDS[1]} ${FIELDS[2]}
 done) < packages.tsv
 
-(cd page ; git add . ; git commit --amend ; git push -f -q > /dev/null 2>&1)
+git config --global user.name "Travis BuildBot"
+git config --global user.email "travis@mulled.jonasw.de"
+
+(cd page ; git add . ; git commit --no-edit --amend ; git push -f -q origin gh-pages > /dev/null 2>&1)
 
