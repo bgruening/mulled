@@ -9,6 +9,8 @@ branches:
     - master
 
 install:
+  - curl https://get.docker.com/ | /bin/bash
+  - docker -v
   - wget https://storage.googleapis.com/involucro-1149.appspot.com/involucro
   - chmod u+x involucro
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
