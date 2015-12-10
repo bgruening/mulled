@@ -1,5 +1,5 @@
 
-inv.task('build')
+builder = inv.task('build')
   .using('busybox')
     .run('mkdir', '-p', 'dist/bin')
     .run('mkdir', '-p', 'info')
@@ -16,6 +16,10 @@ inv.task('build')
       "./dist/Cellar:/root/brew/Cellar",
       "./info:/info"
     }})
+if ENV.ADDITIONAL_PACKAGES != "" then
+  builder.run('$BREW install ' .. ENV.ADDITIONAL_PACKAGES)
+end
+builder
     .run('$BREW install ' .. ENV.PACKAGE)
     .run('$BREW test ' .. ENV.PACKAGE)
     .run('$BREW info --json=v1 ' .. ENV.PACKAGE .. ' > /info/info.json')
