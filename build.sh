@@ -35,8 +35,7 @@ function buildPackage {
   (
     echo "---"
     echo "layout: post"
-    jsonForImage $PACKAGE $PACKAGER
-    echo
+    echo "image: $PACKAGE"
     echo "---"
   ) > $POST_FILENAME
 
