@@ -29,7 +29,7 @@ function buildPackage {
 
   PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua build package
 
-  POST_FILENAME=page/_posts/$(date +%F)-$PACKAGE.html
+  POST_FILENAME=page/_posts/2015-01-01-$PACKAGE.html
   DATA_FILENAME=page/_data/$PACKAGE.json
   jsonForImage $PACKAGE $PACKAGER | jq . > $DATA_FILENAME
   (
