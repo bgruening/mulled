@@ -16,7 +16,7 @@ builder = inv.task('build')
       "./dist/Cellar:/root/brew/Cellar",
       "./info:/info"
     }})
-if ENV.ADDITIONAL_PACKAGES != "" then
+if ENV.ADDITIONAL_PACKAGES ~= "" then
   builder.run('$BREW install ' .. ENV.ADDITIONAL_PACKAGES)
 end
 builder
