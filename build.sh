@@ -35,15 +35,9 @@ function buildPackage {
     echo "DIGEST"
     cat digest.txt
 
-    POST_FILENAME=page/_posts/2015-01-01-$PACKAGE.html
+    API_FILENAME=page/images/$PACKAGE.json
     DATA_FILENAME=page/_data/$PACKAGE.json
-    jsonForImage $PACKAGE $PACKAGER | jq . > $DATA_FILENAME
-    (
-    echo "---"
-    echo "layout: post"
-    echo "image: $PACKAGE"
-    echo "---"
-    ) > $POST_FILENAME
+    jsonForImage $PACKAGE $PACKAGER | jq . | tee $API_FILENAME $DATA_FILENAME
   fi
   
   PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua clean
@@ -60,5 +54,5 @@ if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
   git config --global user.name "Travis BuildBot"
   git config --global user.email "travis@mulled.jonasw.de"
 
-  (cd page ; git add . ; git commit -m "results for $TRAVIS_BUILD_NR" -m "" -m "commit range $TRAVIS_COMMIT_RANGE" -m "travis build https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID" ; git push -q origin gh-pages > /dev/null 2>&1)
+  (cd page ; git add . ; git commit -m "results for $TRAVIS_BUILD_NUMBER" -m "" -m "commit range $TRAVIS_COMMIT_RANGE" -m "travis build https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID" ; git push -q origin gh-pages > /dev/null 2>&1)
 fi
