@@ -2,27 +2,23 @@
 
 set -e
 
-mkdir page
+mkdir -p page
 git clone -b gh-pages https://${GITHUB_TOKEN}@github.com/thriqon/mulled.git page >/dev/null 2>&1
 
-function yamlForImage {
+function jsonForImage {
   IMAGE=$1
   REPO=thriqon/mulled:$IMAGE
   PACKAGER=$2
 
-  echo "---"
-  echo "image: $IMAGE"
-  echo "date: $(date -Iseconds)"
-  echo "info: $(cat info/info.json)"
+  echo "{\"image\": \"$IMAGE\", \"date\": \"$(date -Iseconds)\", "
+  echo "\"info\": $(cat info/info.json | jq .[0]), "
   if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
-    echo "published: true"
+    echo -n "\"published\": true, "
   fi
-  echo "size: $(docker inspect -f "{{.VirtualSize}}" $REPO | numfmt --to=iec-i --suffix=B)"
-  echo "checksum: $(docker save $REPO | sha256sum - | cut -d' ' -f 1)"
-  echo "buildurl: \"https://travis-ci.org/thriqon/mulled/builds/$TRAVIS_BUILD_ID\""
-  echo "packager: $PACKAGER"
-  echo "layout: post"
-  echo "---"
+  echo -n "\"size\": \"$(docker inspect -f "{{.VirtualSize}}" $REPO | numfmt --to=iec-i --suffix=B)\", "
+  echo -n "\"checksum\": \"$(docker save $REPO | sha256sum - | cut -d' ' -f 1)\", "
+  echo -n "\"buildurl\": \"https://travis-ci.org/thriqon/mulled/builds/$TRAVIS_BUILD_ID\", "
+  echo -n "\"packager\": \"$PACKAGER\"}"
 }
 
 function buildPackage {
@@ -34,7 +30,15 @@ function buildPackage {
   PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua build package
 
   POST_FILENAME=page/_posts/$(date +%F)-$PACKAGE.html
-  yamlForImage $PACKAGE $PACKAGER > $POST_FILENAME
+  DATA_FILENAME=page/_data/$PACKAGE.json
+  jsonForImage $PACKAGE $PACKAGER | jq . > $DATA_FILENAME
+  (
+    echo "---"
+    echo "layout: post"
+    jsonForImage $PACKAGE $PACKAGER
+    echo
+    echo "---"
+  ) > $POST_FILENAME
 
   if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
     docker push thriqon/mulled:$PACKAGE
