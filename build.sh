@@ -12,11 +12,9 @@ function jsonForImage {
 
   echo "{\"image\": \"$IMAGE\", \"date\": \"$(date -Iseconds)\", "
   echo "\"info\": $(cat info/info.json | jq .[0]), "
-  if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
-    echo -n "\"published\": true, "
-  fi
+  echo -n "\"published\": true, "
   echo -n "\"size\": \"$(docker inspect -f "{{.VirtualSize}}" $REPO | numfmt --to=iec-i --suffix=B)\", "
-  echo -n "\"checksum\": \"$(cat info/digest.txt)\", "
+  echo -n "\"checksum\": \"$(cat digest.txt)\", "
   echo -n "\"buildurl\": \"https://travis-ci.org/thriqon/mulled/builds/$TRAVIS_BUILD_ID\", "
   echo -n "\"packager\": \"$PACKAGER\"}"
 }
@@ -30,12 +28,12 @@ function buildPackage {
   PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua build package
 
   if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
-    docker push thriqon/mulled:$PACKAGE > info/push.log
-    grep digest info/push.log | cut -d " " -f 3 > info/digest.txt
+    docker push thriqon/mulled:$PACKAGE > push.log
+    grep digest push.log | cut -d " " -f 3 > digest.txt
     echo "UPLOAD"
-    cat info/push.log
+    cat push.log
     echo "DIGEST"
-    cat info/digest.txt
+    cat digest.txt
 
     POST_FILENAME=page/_posts/2015-01-01-$PACKAGE.html
     DATA_FILENAME=page/_data/$PACKAGE.json
