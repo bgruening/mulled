@@ -40,7 +40,7 @@ function buildPackage {
   ) > $POST_FILENAME
 
   if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
-    docker push thriqon/mulled:$PACKAGE
+    docker push thriqon/mulled:$PACKAGE | cat
   fi
   
   PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua clean
