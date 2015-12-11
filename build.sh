@@ -39,6 +39,8 @@ function buildPackage {
   if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
     docker push thriqon/mulled:$PACKAGE
   fi
+  
+  PACKAGE=$PACKAGE BINARY=$BINARY ADDITIONAL_PACKAGES=$ADDITIONAL_PACKAGES ./involucro -f ${PACKAGER}.lua clean
 }
 
 (while read line; do
@@ -51,5 +53,5 @@ done) < packages.tsv
 git config --global user.name "Travis BuildBot"
 git config --global user.email "travis@mulled.jonasw.de"
 
-(cd page ; git add . ; git commit --no-edit --amend ; git push -f -q origin gh-pages > /dev/null 2>&1)
+(cd page ; git add . ; git commit -m "results for $TRAVIS_BUILD_NO" -m "" -m "commit range $TRAVIS_COMMIT_RANGE" -m "travis build https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID" ; git push -q origin gh-pages > /dev/null 2>&1)
 
