@@ -18,7 +18,7 @@ inv.task('build')
         .using('busybox')
                 .run('mkdir', '-p', 'dist', 'info')
         .using('alpine')
-                .run('apk', '--root', '/source',
+                .run('apk', '--root', '/source/dist',
                         '--update-cache',
                         '--repository', 'http://dl-4.alpinelinux.org/alpine/v3.2/main',
                         '--keys-dir', '/etc/apk/keys',
@@ -28,6 +28,8 @@ inv.task('build')
                 .withHostConfig({binds = {"./info:/info"}})
                 .withConfig({entrypoint = {"/bin/sh", "-c"}})
                 .run(extractInfo)
+        .using('busybox')
+                .run('rm', '-rf', 'dist/lib/apk', 'dist/var/cache/apk/')
 
 inv.task('package')
         .wrap('dist').at('/')
