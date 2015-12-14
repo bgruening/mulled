@@ -22,7 +22,8 @@ end
 builder
     .run('$BREW install ' .. ENV.PACKAGE)
     .run('$BREW test ' .. ENV.PACKAGE)
-    .run('$BREW info --json=v1 ' .. ENV.PACKAGE .. ' > /info/info.json')
+    .run('$BREW info --json=v1 ' .. ENV.PACKAGE .. ' | jq ".[0]" | ' .. 
+        'jq "{homepage: .homepage, description: .desc, version: .versions.stable}" > /info/info.json')
 
 inv.task('package')
   .wrap('dist').inImage('mwcampbell/muslbase-runtime')
