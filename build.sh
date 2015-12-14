@@ -52,7 +52,7 @@ done) < packages.tsv
 
 if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
   git config --global user.name "Travis BuildBot"
-  git config --global user.email "travis@mulled.jonasw.de"
+  git config --global user.email "support@travis-ci.org"
 
   (cd page ; git add . ; git commit -m "results for $TRAVIS_BUILD_NUMBER" -m "" -m "commit range $TRAVIS_COMMIT_RANGE" -m "travis build https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID" ; git push -q origin gh-pages > /dev/null 2>&1)
 fi
