@@ -11,7 +11,7 @@ function jsonForImage {
   PACKAGER=$2
 
   echo "{\"image\": \"$IMAGE\", \"date\": \"$(date -Iseconds)\", "
-  echo "\"info\": $(cat info/info.json | jq .[0]), "
+  echo "\"info\": $(cat info/info.json), "
   echo -n "\"published\": true, "
   echo -n "\"size\": \"$(docker inspect -f "{{.VirtualSize}}" $REPO | numfmt --to=iec-i --suffix=B)\", "
   echo -n "\"checksum\": \"$(cat digest.txt)\", "
