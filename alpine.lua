@@ -18,16 +18,13 @@ inv.task('build')
         .using('busybox')
                 .run('mkdir', '-p', 'dist', 'info')
         .using('alpine')
-                .run('apk', '--root', '/source/dist',
-                        '--update-cache',
-                        '--repository', 'http://dl-4.alpinelinux.org/alpine/v3.2/main',
-                        '--keys-dir', '/etc/apk/keys',
-                        '--initdb',
-                        'add', ENV.PACKAGE)
-
-                .withHostConfig({binds = {"./info:/info"}})
+                .withHostConfig({binds = {"./dist:/dist", "./info:/info"}})
                 .withConfig({entrypoint = {"/bin/sh", "-c"}})
-                .run(extractInfo)
+
+                .run('apk --root /dist --update-cache ' ..
+                        '--repository http://dl-4.alpinelinux.org/alpine/v3.2/main ' ..
+                        '--keys-dir /etc/apk/keys ' ..
+                        '--initdb add ' .. ENV.PACKAGE .. ' && ' .. extractInfo)
         .using('busybox')
                 .run('rm', '-rf', 'dist/lib/apk', 'dist/var/cache/apk/')
 
