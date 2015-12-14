@@ -1,6 +1,7 @@
 
-extractInfo = 'apk info -wd  ' .. ENV.PACKAGE .. [==[
+extractInfo = 'apk info --update-cache -wd  ' .. ENV.PACKAGE .. [==[
 | (
+  read discard ;
   read fline ;
         echo -n '{"version":"' ;
         echo $fline | cut -d" " -f1 | cut -d"-" -f 2-3 | tr '\n' '"';
